@@ -230,7 +230,403 @@ if __name__ == '__main__':
                 else:
                     print("--> No se ha cargado el archivo de notas.\n")
             elif opcion == 3:
-                print('Caso 3\n')
+                if documento_guardado:
+                    try:
+                        students_html = ""
+                        color = ""
+                        contador_students = 0
+                        for student in estudiantes:
+                            contador_students = contador_students + 1
+                            if student[1] >= 61:
+                                color = 'style="color: blue;"'
+                            else:
+                                color = 'style="color: red;"'
+                            students_html = students_html + """<tr>
+                                            <th scope="row">"""+ str(contador_students) + """</th>
+                                            <td style="text-align: left;">"""+student[0]+"""</td>
+                                            <td """ + color + ">" + str(student[1]) + """</td>
+                                            </tr>\n"""
+                        parametros_html = ""
+                        students_asc_html = ""
+                        students_desc_html = ""
+                        prom_html = 0
+                        min_html = 0
+                        students_min_html = ""
+                        max_html = 0
+                        students_max_html = ""
+                        contador_apr = 0
+                        students_apr_html = ""
+                        contador_rep = 0
+                        students_rep_html = ""
+                        for par in parametros:
+                            if par.lower() == "asc":
+                                parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarTablaASC()">ASC</button>\n'
+                                estudiantes_ASC = bubbleSort_ascendente(estudiantes)
+                                contador_asc = 0
+                                for student in estudiantes_ASC:
+                                    contador_asc = contador_asc + 1
+                                    students_asc_html = students_asc_html + """<tr>
+                                                    <th scope="row">""" + str(contador_asc) + """</th>
+                                                    <td style="text-align: left;">""" +student[0]+"""</td>
+                                                    <td>"""+str(student[1])+"""</td>
+                                                    </tr>"""
+                            elif par.lower() == "desc":
+                                parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarTablaDESC()">DESC</button>\n'
+                                estudiantes_DESC = bubbleSort_descendente(estudiantes)
+                                contador_desc = 0
+                                for student in estudiantes_DESC:
+                                    contador_desc = contador_desc + 1
+                                    students_desc_html = students_desc_html + """<tr>
+                                                    <th scope="row">"""+str(contador_desc)+"""</th>
+                                                    <td style="text-align: left;">"""+student[0]+"""</td>
+                                                    <td>"""+str(student[1])+"""</td>
+                                                    </tr>"""
+                            elif par.lower() == "avg":
+                                parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarPromedio()">AVG</button>\n'
+                                prom_html = promedio(estudiantes)
+                            elif par.lower() == "min":
+                                parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarMinimo()">MIN</button>\n'
+                                estudiantes_menoramayor = bubbleSort_ascendente(estudiantes)
+                                estudiantes_con_minima = []
+                                estudiantes_con_minima.append(estudiantes_menoramayor[0])
+                                for i in range(1, len(estudiantes)):
+                                    if estudiantes_menoramayor[i][1] == estudiantes_con_minima[0][1]:
+                                        estudiantes_con_minima.append(estudiantes_menoramayor[i])
+                                    else:
+                                        break
+                                if len(estudiantes_con_minima) > 1:
+                                    min_html = estudiantes_con_minima[0][1]
+                                    for student in estudiantes_con_minima:
+                                        students_min_html = students_min_html + '<li>' + student[0] + '</li>\n'
+                                else:
+                                    min_html = estudiantes_con_minima[0][1]
+                                    students_min_html = estudiantes_con_minima[0][0]
+                            elif par.lower() == "max":
+                                parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarMaximo()">MAX</button>\n'
+                                estudiantes_mayoramenor = bubbleSort_descendente(estudiantes)
+                                estudiantes_con_maxima = []
+                                estudiantes_con_maxima.append(estudiantes_mayoramenor[0])
+                                for i in range(1, len(estudiantes)):
+                                    if estudiantes_mayoramenor[i][1] == estudiantes_con_maxima[0][1]:
+                                        estudiantes_con_maxima.append(estudiantes_mayoramenor[i])
+                                    else:
+                                        break
+                                if len(estudiantes_con_maxima) > 1:
+                                    max_html = estudiantes_con_maxima[0][1]
+                                    for student in estudiantes_con_maxima:
+                                        students_max_html = students_max_html + '<li>'+student[0]+'</li>\n'
+                                else:
+                                    max_html = estudiantes_con_maxima[0][1]
+                                    students_max_html = estudiantes_con_maxima[0][0]
+                            elif par.lower() == "apr":
+                                parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarAprobados()">APR</button>\n'
+                                estudiantes_APR = aprobados(estudiantes)
+                                if len(estudiantes_APR) > 0:
+                                    contador_apr = len(estudiantes_APR)
+                                    for student in estudiantes_APR:
+                                        students_apr_html = students_apr_html + '<li>'+ student[0] + ' - Nota: '+ str(student[1]) + '</li>\n'
+                                else:
+                                    contador_apr = 0
+                            elif par.lower() == "rep":
+                                parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarReprobados()">REP</button>\n'
+                                estudiantes_REP = reprobados(estudiantes)
+                                if len(estudiantes_REP) > 0:
+                                    contador_rep = len(estudiantes_REP)
+                                    for student in estudiantes_REP:
+                                        students_rep_html = students_rep_html + '<li>'+student[0] + ' - Nota: '+str(student[1])+ '</li>\n'
+                                else:
+                                    contador_rep = 0
+                            else:
+                                print("--> El parámetro", par, "no se reconoce como parámetro válido.\n")
+                    except:
+                        print("--> Ocurrio un error en la lógica de la creación de reportes")
+                    try:
+                        reporte_html = open('Reporte.html', 'w')
+                        reporte_html.write("""<!DOCTYPE html>
+                        <html lang="es">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+                            <link rel="stylesheet" href="estilos.css" type="text/css" />
+                            <title>Reportes</title>
+                        </head>
+                        <body>
+                            <h1 class="display-1" style="text-align: center; color: white;">Reportes</h1>
+                            <div class="datos-archivo">
+                                <h1>Nombre del curso: </h1><h1 class="display-6">"""+nombre_curso+"""</h1><br>
+                                <div class="tabla-estudiantes">
+                                    <table class="table table-striped table-hover">
+                                        <thead style="background-color: black; color: white;">
+                                            <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col" style="text-align: left;">Nombre del Estudiante</th>
+                                            <th scope="col">Nota</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>"""+students_html+
+                                        """</tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="reportes">
+                                <h1>Reportes solicitados:</h1>
+                                <div class="botones-reportes">
+                                    <div class="btn-group" role="group" aria-label="First group">"""+ parametros_html +
+                                        """<button type="button" class="btn btn-outline-dark" onclick="mostrarTodos()">Mostrar todos</button>
+                                    </div>
+                                </div>
+
+                                <div class="reportes-individuales" id="reportes-individuales">
+                                    <!-- Espacio para reportes -->
+                                </div>
+
+                                <div class="reportes-todos" id="reportes-todos" hidden>
+                                    <div id="tabla-oculta-ASC">
+                                        <h1 class="display-6"><b>Reporte ASC (ascendente)</b></h1>
+                                        <div class="tabla-ASC">
+                                            <table class="table table-striped table-hover">
+                                                <thead style="background-color:rgb(66, 4, 4); color: white;">
+                                                    <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col" style="text-align: left;">Nombre del Estudiante</th>
+                                                    <th scope="col">Nota</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>"""+students_asc_html+
+                                                """</tbody>
+                                            </table>
+                                        </div>
+                                        <hr />
+                                    </div>
+                                
+                                    <div id="tabla-oculta-DESC">
+                                        <h1 class="display-6"><b>Reporte DESC (descendente)</b></h1>
+                                        <div class="tabla-DESC">
+                                            <table class="table table-striped table-hover">
+                                                <thead style="background-color: rgb(66, 4, 4); color: white;">
+                                                    <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col" style="text-align: left;">Nombre del Estudiante</th>
+                                                    <th scope="col">Nota</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>"""+students_desc_html+
+                                                """</tbody>
+                                            </table>
+                                        </div>
+                                        <hr />
+                                    </div>
+                                
+                                    <div id="promedio-oculto">
+                                        <h1 class="display-6"><b>Reporte AVG</b></h1>
+                                        <p>Promedio de nota de los estudiantes: <b>"""+str(prom_html)+"""</b></p>
+                                        <hr />
+                                    </div>
+                                
+                                    <div id="minimo-oculto">
+                                        <h1 class="display-6"><b>Reporte MIN</b></h1>
+                                        <p>Nota mínima: <b>"""+str(min_html)+"""</b></p>
+                                        <p style="line-height: 15px;">Estudiantes con nota mínima:</p>
+                                        <ul>"""+students_min_html+
+                                        """</ul>
+                                        <hr />
+                                    </div>
+                                
+                                    <div id="maximo-oculto">
+                                        <h1 class="display-6"><b>Reporte MAX</b></h1>
+                                        <p>Nota máxima: <b>"""+str(max_html)+"""</b></p>
+                                        <p style="line-height: 15px;">Estudiantes con nota máxima:</p>
+                                        <ul>"""+students_max_html+
+                                        """</ul>
+                                        <hr />
+                                    </div>
+                                    
+                                    <div id="aprobados-oculto">
+                                        <h1 class="display-6"><b>Reporte APR</b></h1>
+                                        <p>Cantidad de estudiantes aprobados: <b>"""+str(contador_apr)+"""</b></p>
+                                        <ul>"""+students_apr_html+
+                                        """</ul>
+                                        <hr />
+                                    </div>
+                                    
+                                    <div id="reprobados-oculto">
+                                        <h1 class="display-6"><b>Reporte REP</b></h1>
+                                        <p>Cantidad de estudiantes reprobados: <b>"""+str(contador_rep)+"""</b></p>
+                                        <ul>"""+students_rep_html+
+                                        """</ul>
+                                        <hr />
+                                    </div>
+                                </div>
+                            </div>
+                            <footer>
+                                <p>Elías Abraham Vasquez Soto - 201900131</p>
+                                <p>Práctica 1 - Laboratorio Lenguajes Formales y de Programación B-</p>        
+                                <p>Facultad de Ingeniería USAC</p>
+                            </footer>
+                            <script>
+                                function mostrarTablaASC(){
+                                    var divReporteASC = document.getElementById("reportes-individuales")
+                                    var tablaOcultaASC = document.getElementById("tabla-oculta-ASC")
+                                    divReporteASC.innerHTML = ""
+                                    divReporteASC.innerHTML = tablaOcultaASC.innerHTML
+                                }
+                                function mostrarTablaDESC(){
+                                    var divReporteDESC = document.getElementById("reportes-individuales")
+                                    var tablaOcultaDESC = document.getElementById("tabla-oculta-DESC")
+                                    divReporteDESC.innerHTML = ""
+                                    divReporteDESC.innerHTML = tablaOcultaDESC.innerHTML
+                                }
+                                function mostrarPromedio(){
+                                    var divReporteAVG = document.getElementById("reportes-individuales")
+                                    var divPromedio = document.getElementById("promedio-oculto")
+                                    divReporteAVG.innerHTML = ""
+                                    divReporteAVG.innerHTML = divPromedio.innerHTML
+                                }
+                                function mostrarMinimo(){
+                                    var divReporteMIN = document.getElementById("reportes-individuales")
+                                    var divMinimo = document.getElementById("minimo-oculto")
+                                    divReporteMIN.innerHTML = ""
+                                    divReporteMIN.innerHTML = divMinimo.innerHTML
+                                }
+                                function mostrarMaximo(){
+                                    var divReporteMAX = document.getElementById("reportes-individuales")
+                                    var divMaximo = document.getElementById("maximo-oculto")
+                                    divReporteMAX.innerHTML = ""
+                                    divReporteMAX.innerHTML = divMaximo.innerHTML
+                                }
+                                function mostrarAprobados(){
+                                    var divReporteAPR = document.getElementById("reportes-individuales")
+                                    var divAprobados = document.getElementById("aprobados-oculto")
+                                    divReporteAPR.innerHTML = ""
+                                    divReporteAPR.innerHTML = divAprobados.innerHTML
+                                }
+                                function mostrarReprobados(){
+                                    var divReporteREP = document.getElementById("reportes-individuales")
+                                    var divReproabdos = document.getElementById("reprobados-oculto")
+                                    divReporteREP.innerHTML = ""
+                                    divReporteREP.innerHTML = divReproabdos.innerHTML
+                                }
+                                function mostrarTodos(){
+                                    var divReportes = document.getElementById("reportes-individuales")
+                                    var divTodos = document.getElementById("reportes-todos")
+                                    divReportes.innerHTML = ""
+                                    divReportes.innerHTML = divTodos.innerHTML
+                                }
+                            </script>
+
+                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+                        </body>
+                        </html>""")
+                        reporte_html.close()
+                    except:
+                        print("--> Ocurrio un error en la creación del archivo HTML")
+                    try:
+                        estilos_css = open('estilos.css', 'w')
+                        estilos_css.write("""body {
+                                background-color:rgb(4, 42, 66);
+                                padding-top: 20px;
+                            }
+
+                            .datos-archivo {
+                                background-color: rgb(255, 255, 255);
+                                padding-top: 20px;
+                                padding-bottom: 20px;
+                                padding-left: 50px;
+                                margin: 30px;
+                            }
+
+                            .datos-archivo h1 {
+                                display: inline;
+                            }
+
+                            .tabla-estudiantes {
+                                padding-top: 20px;
+                                padding-left: 100px;
+                                padding-right: 120px;
+                                text-align: center;
+                                font-family: 'Segoe UI', Verdana, Tahoma, Geneva, sans-serif;
+                                font-size: 20px;
+                                letter-spacing: 1px;
+                            }
+
+                            .reportes {
+                                background-color: rgb(255, 255, 255);
+                                padding-top: 20px;
+                                padding-bottom: 20px;
+                                padding-left: 50px;
+                                margin: 30px;
+                            }
+
+                            .reportes h1 {
+                                display: inline;
+                            }
+
+                            .reportes p {
+                                text-align: left;
+                                line-height: 60px;
+                                font-family: 'Segoe UI', Verdana, Tahoma, Geneva, sans-serif;
+                                font-size: 30px;
+                                letter-spacing: 1px;
+                                color: rgb(63, 61, 61);
+                            }
+
+                            .reportes ul {
+                                text-align: left;
+                                line-height: 60px;
+                                font-family: 'Segoe UI', Verdana, Tahoma, Geneva, sans-serif;
+                                font-size: 30px;
+                                letter-spacing: 1px;
+                                color: rgb(63, 61, 61);
+                            }
+
+                            .botones-reportes {
+                                text-align: center;
+                                padding: 10px;
+                            }
+
+                            .reportes-individuales {
+                                text-align: center;
+                                padding-left: 75px;
+                                padding-right: 150px;
+                                padding-top: 25px;
+                            }
+
+                            .tabla-ASC {
+                                padding-top: 20px;
+                                padding-left: 50px;
+                                padding-right: 50px;
+                                font-family: 'Segoe UI', Verdana, Tahoma, Geneva, sans-serif;
+                                font-size: 20px;
+                                letter-spacing: 1px;
+                            }
+
+                            .tabla-DESC {
+                                padding-top: 20px;
+                                padding-left: 50px;
+                                padding-right: 50px;
+                                font-family: 'Segoe UI', Verdana, Tahoma, Geneva, sans-serif;
+                                font-size: 20px;
+                                letter-spacing: 1px;
+                            }
+
+                            footer {
+                                background-color: black;
+                                color: white;
+                                line-height: 10px;
+                                text-align: center;
+                                padding-top: 10px;
+                                padding-bottom: 5px;
+                                font-size: 15px;
+                                font-family: 'Segoe UI', Verdana, Tahoma, Geneva, sans-serif;
+                            }""")
+                        estilos_css.close()
+                    except:
+                        print("--> Ocurrio un error en la creación del archivo CSS")
+                    print("--> Se generó el reporte HTML correctamente.\n")
+                else:
+                    print("--> No se ha cargado el archivo de notas.\n")
             elif opcion == 4:
                 print('--> Gracias por usar esta aplicacion :)')
                 break
