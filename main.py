@@ -247,22 +247,28 @@ if __name__ == '__main__':
                                             <td """ + color + ">" + str(student[1]) + """</td>
                                             </tr>\n"""
                         parametros_html = ""
-                        students_asc_html = ""
-                        students_desc_html = ""
+                        students_asc_html = '<tr><th scope="row">-</th><td style="text-align: left;">No se solicito este reporte</td><td>-</td></tr>'
+                        students_desc_html = '<tr><th scope="row">-</th><td style="text-align: left;">No se solicito este reporte</td><td>-</td></tr>'
                         prom_html = 0
+                        prom_solicitado = False
                         min_html = 0
                         students_min_html = ""
+                        min_solicitado = False
                         max_html = 0
                         students_max_html = ""
+                        max_solicitado = False
                         contador_apr = 0
                         students_apr_html = ""
+                        apr_solicitado = False
                         contador_rep = 0
                         students_rep_html = ""
+                        rep_solicitado = False
                         for par in parametros:
                             if par.lower() == "asc":
                                 parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarTablaASC()">ASC</button>\n'
                                 estudiantes_ASC = bubbleSort_ascendente(estudiantes)
                                 contador_asc = 0
+                                students_asc_html = ""
                                 for student in estudiantes_ASC:
                                     contador_asc = contador_asc + 1
                                     students_asc_html = students_asc_html + """<tr>
@@ -273,6 +279,7 @@ if __name__ == '__main__':
                             elif par.lower() == "desc":
                                 parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarTablaDESC()">DESC</button>\n'
                                 estudiantes_DESC = bubbleSort_descendente(estudiantes)
+                                students_desc_html = ""
                                 contador_desc = 0
                                 for student in estudiantes_DESC:
                                     contador_desc = contador_desc + 1
@@ -284,8 +291,10 @@ if __name__ == '__main__':
                             elif par.lower() == "avg":
                                 parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarPromedio()">AVG</button>\n'
                                 prom_html = promedio(estudiantes)
+                                prom_solicitado = True
                             elif par.lower() == "min":
                                 parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarMinimo()">MIN</button>\n'
+                                min_solicitado = True
                                 estudiantes_menoramayor = bubbleSort_ascendente(estudiantes)
                                 estudiantes_con_minima = []
                                 estudiantes_con_minima.append(estudiantes_menoramayor[0])
@@ -294,6 +303,7 @@ if __name__ == '__main__':
                                         estudiantes_con_minima.append(estudiantes_menoramayor[i])
                                     else:
                                         break
+                                students_min_html = ""
                                 if len(estudiantes_con_minima) > 1:
                                     min_html = estudiantes_con_minima[0][1]
                                     for student in estudiantes_con_minima:
@@ -303,6 +313,7 @@ if __name__ == '__main__':
                                     students_min_html = estudiantes_con_minima[0][0]
                             elif par.lower() == "max":
                                 parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarMaximo()">MAX</button>\n'
+                                max_solicitado = True
                                 estudiantes_mayoramenor = bubbleSort_descendente(estudiantes)
                                 estudiantes_con_maxima = []
                                 estudiantes_con_maxima.append(estudiantes_mayoramenor[0])
@@ -311,6 +322,7 @@ if __name__ == '__main__':
                                         estudiantes_con_maxima.append(estudiantes_mayoramenor[i])
                                     else:
                                         break
+                                students_max_html = ""
                                 if len(estudiantes_con_maxima) > 1:
                                     max_html = estudiantes_con_maxima[0][1]
                                     for student in estudiantes_con_maxima:
@@ -320,7 +332,9 @@ if __name__ == '__main__':
                                     students_max_html = estudiantes_con_maxima[0][0]
                             elif par.lower() == "apr":
                                 parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarAprobados()">APR</button>\n'
+                                apr_solicitado = True
                                 estudiantes_APR = aprobados(estudiantes)
+                                students_apr_html = ""
                                 if len(estudiantes_APR) > 0:
                                     contador_apr = len(estudiantes_APR)
                                     for student in estudiantes_APR:
@@ -329,7 +343,9 @@ if __name__ == '__main__':
                                     contador_apr = 0
                             elif par.lower() == "rep":
                                 parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarReprobados()">REP</button>\n'
+                                rep_solicitado = True
                                 estudiantes_REP = reprobados(estudiantes)
+                                students_rep_html = ""
                                 if len(estudiantes_REP) > 0:
                                     contador_rep = len(estudiantes_REP)
                                     for student in estudiantes_REP:
@@ -338,6 +354,16 @@ if __name__ == '__main__':
                                     contador_rep = 0
                             else:
                                 print("--> El parámetro", par, "no se reconoce como parámetro válido.\n")
+                        if not prom_solicitado:
+                            prom_html = 'No se solicito este reporte'
+                        if not min_solicitado:
+                            min_html = 'No se solicito este reporte'
+                        if not max_solicitado:
+                            max_html = 'No se solicito este reporte'
+                        if not apr_solicitado:
+                            contador_apr = 'No se solicito este reporte'
+                        if not rep_solicitado:
+                            contador_rep = 'No se solicito este reporte'
                     except:
                         print("--> Ocurrio un error en la lógica de la creación de reportes")
                     try:
@@ -427,8 +453,8 @@ if __name__ == '__main__':
                                 
                                     <div id="minimo-oculto">
                                         <h1 class="display-6"><b>Reporte MIN</b></h1>
-                                        <p>Nota mínima: <b>"""+str(min_html)+"""</b></p>
-                                        <p style="line-height: 15px;">Estudiantes con nota mínima:</p>
+                                        <p>Nota minima: <b>"""+str(min_html)+"""</b></p>
+                                        <p style="line-height: 15px;">Estudiantes con nota minima:</p>
                                         <ul>"""+students_min_html+
                                         """</ul>
                                         <hr />
@@ -436,8 +462,8 @@ if __name__ == '__main__':
                                 
                                     <div id="maximo-oculto">
                                         <h1 class="display-6"><b>Reporte MAX</b></h1>
-                                        <p>Nota máxima: <b>"""+str(max_html)+"""</b></p>
-                                        <p style="line-height: 15px;">Estudiantes con nota máxima:</p>
+                                        <p>Nota maxima: <b>"""+str(max_html)+"""</b></p>
+                                        <p style="line-height: 15px;">Estudiantes con nota maxima:</p>
                                         <ul>"""+students_max_html+
                                         """</ul>
                                         <hr />
@@ -461,9 +487,9 @@ if __name__ == '__main__':
                                 </div>
                             </div>
                             <footer>
-                                <p>Elías Abraham Vasquez Soto - 201900131</p>
-                                <p>Práctica 1 - Laboratorio Lenguajes Formales y de Programación B-</p>        
-                                <p>Facultad de Ingeniería USAC</p>
+                                <p>Elias Abraham Vasquez Soto - 201900131</p>
+                                <p>Practica 1 - Laboratorio Lenguajes Formales y de Programacion B-</p>        
+                                <p>Facultad de Ingenieria USAC</p>
                             </footer>
                             <script>
                                 function mostrarTablaASC(){
