@@ -151,13 +151,15 @@ if __name__ == '__main__':
                     print("\nReportes solicitados:")
                     for par in parametros:
                         if par.lower() == "asc":
-                            estudiantes_ASC = bubbleSort_ascendente(estudiantes)
+                            lista_aux = estudiantes[:]
+                            estudiantes_ASC = bubbleSort_ascendente(lista_aux)
                             print("--> REPORTE ASC:")
                             for student in estudiantes_ASC:
                                 print(student)
                             print("\n")
                         elif par.lower() == "desc":
-                            estudiantes_DESC = bubbleSort_descendente(estudiantes)
+                            lista_aux = estudiantes[:]
+                            estudiantes_DESC = bubbleSort_descendente(lista_aux)
                             print("--> REPORTE DESC:")
                             for student in estudiantes_DESC:
                                 print(student)
@@ -168,7 +170,8 @@ if __name__ == '__main__':
                             print("El promedio de los estudiantes es de", prom, "\n")
                         elif par.lower() == "min":
                             print("--> REPORTE MIN:")
-                            estudiantes_menoramayor = bubbleSort_ascendente(estudiantes)
+                            lista_aux = estudiantes[:]
+                            estudiantes_menoramayor = bubbleSort_ascendente(lista_aux)
                             estudiantes_con_minima = []
                             estudiantes_con_minima.append(estudiantes_menoramayor[0])
                             for i in range(1, len(estudiantes)):
@@ -187,7 +190,8 @@ if __name__ == '__main__':
                                 print("\n")
                         elif par.lower() == "max":
                             print("--> REPORTE MAX:")
-                            estudiantes_mayoramenor = bubbleSort_descendente(estudiantes)
+                            lista_aux = estudiantes[:]
+                            estudiantes_mayoramenor = bubbleSort_descendente(lista_aux)
                             estudiantes_con_maxima = []
                             estudiantes_con_maxima.append(estudiantes_mayoramenor[0])
                             for i in range(1, len(estudiantes)):
@@ -266,7 +270,8 @@ if __name__ == '__main__':
                         for par in parametros:
                             if par.lower() == "asc":
                                 parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarTablaASC()">ASC</button>\n'
-                                estudiantes_ASC = bubbleSort_ascendente(estudiantes)
+                                lista_aux = estudiantes[:]
+                                estudiantes_ASC = bubbleSort_ascendente(lista_aux)
                                 contador_asc = 0
                                 students_asc_html = ""
                                 for student in estudiantes_ASC:
@@ -278,7 +283,8 @@ if __name__ == '__main__':
                                                     </tr>"""
                             elif par.lower() == "desc":
                                 parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarTablaDESC()">DESC</button>\n'
-                                estudiantes_DESC = bubbleSort_descendente(estudiantes)
+                                lista_aux = estudiantes[:]
+                                estudiantes_DESC = bubbleSort_descendente(lista_aux)
                                 students_desc_html = ""
                                 contador_desc = 0
                                 for student in estudiantes_DESC:
@@ -295,7 +301,8 @@ if __name__ == '__main__':
                             elif par.lower() == "min":
                                 parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarMinimo()">MIN</button>\n'
                                 min_solicitado = True
-                                estudiantes_menoramayor = bubbleSort_ascendente(estudiantes)
+                                lista_aux = estudiantes[:]
+                                estudiantes_menoramayor = bubbleSort_ascendente(lista_aux)
                                 estudiantes_con_minima = []
                                 estudiantes_con_minima.append(estudiantes_menoramayor[0])
                                 for i in range(1, len(estudiantes)):
@@ -314,7 +321,8 @@ if __name__ == '__main__':
                             elif par.lower() == "max":
                                 parametros_html = parametros_html + '<button type="button" class="btn btn-outline-dark" onclick="mostrarMaximo()">MAX</button>\n'
                                 max_solicitado = True
-                                estudiantes_mayoramenor = bubbleSort_descendente(estudiantes)
+                                lista_aux = estudiantes[:]
+                                estudiantes_mayoramenor = bubbleSort_descendente(lista_aux)
                                 estudiantes_con_maxima = []
                                 estudiantes_con_maxima.append(estudiantes_mayoramenor[0])
                                 for i in range(1, len(estudiantes)):
