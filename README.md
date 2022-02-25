@@ -7,6 +7,7 @@ Elías Abraham Vasquez Soto
 LABORATORIO LENGUAJES FORMALES Y DE PROGRAMACION Sección B-
 ### Descripción
 Aplicación en consola, desarrollada en Python, que permite la lectura de un archivo de texto plano con extensión .lfp que contiene los datos de los estudiantes de un curso y la nota final que obtuvieron en dicho curso, además de palabras reservadas que indica que tipo de reporte se quiere realizar.
+
 **Estructura del archivo:**
 ```
 NOMBRE_DEL_CURSO = { 
