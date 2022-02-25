@@ -1,5 +1,5 @@
-## LFP_Practica1_201900131
-### Nombre
+## Analizador léxico en consola
+### Nombre desarrollador
 Elías Abraham Vasquez Soto
 ### Carnet
 201900131
